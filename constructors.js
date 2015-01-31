@@ -162,3 +162,30 @@ function Spellcaster (name, health, mana) {
          return false;
       }
    };
+
+function FireSpellcaster (name, health, mana) {
+   this.maxHealth = health;
+
+   Spellcaster.call(this, name, health, mana);
+}
+
+FireSpellcaster.prototype = Object.create(Spellcaster.prototype, {
+   constructor : {
+      value : Spellcaster
+   }
+});
+
+   //If FireSpellcaster is receiving damage AND current health is < half, then
+   FireSpellcaster.prototype.inflictDamage = function (damage) {
+      if (this.health < (this.maxHealth/2)) {
+         damage = damage*2;
+      }
+
+      return Spellcaster.prototype.inflictDamage.call(this, damage);
+   };
+
+   //If FireSpellcaster, mana cost is reduced by half.
+   FireSpellcaster.prototype.spendMana = function (cost) {
+
+      return Spellcaster.prototype.spendMana.call(this, cost/2);
+   };
